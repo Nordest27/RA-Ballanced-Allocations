@@ -18,10 +18,6 @@ def run_experiment(
 ):
     np.random.seed()
     n = max(m**2//batch, 1)
-    #print("m:", m)
-    #print("n:", n)
-    #print("batch:", batch)
-    #print("d:", d)
     bins = np.zeros(m)
     bins_indices = np.array(range(len(bins)))
     max_gap_n_eq_m = 0
@@ -35,38 +31,24 @@ def run_experiment(
             )
             if partial_info_queries == 0:
                 aux_bins = bins[option_bins]
-                #print("Option bins:", option_bins)
                 option_bins = option_bins[aux_bins == aux_bins.min()]
-                #print("Aux bins:", aux_bins)
-                #print("Filtered option bins:", option_bins)
             else:
                 percentile = 50
-                #print("Bins: ", bins)
                 for j in range(partial_info_queries):
                     if len(option_bins) < 2:
                         break
-                    #print("Percentile:", percentile)
-                    #print("Option bins:", option_bins)
                     bins_perc_value = np.percentile(bins, percentile)
-                    #print("Bins perc value:", bins_perc_value)
                     lt_median_option_bins = option_bins[bins[option_bins] < bins_perc_value]
-                    #print("Median options:", lt_median_option_bins)
                     if len(lt_median_option_bins) > 0:
                         option_bins = lt_median_option_bins
                         percentile -= 100/(2**(j+2))
                     else:
                         percentile += 100/(2**(j+2))
-                #print("Option bins:", option_bins)
-                #print("Percentile:", percentile)
             chosen_bin = np.random.choice(option_bins)
             batch_bins[chosen_bin] += 1
             if b*batch+i == m-1:
                 max_gap_n_eq_m = max_gap(batch_bins)
-                #print("linear bins:", batch_bins)
-                #print("linear max gap:", max_gap(batch_bins))
         bins = batch_bins
-    #print("high load bins:", bins)
-    #print("high load max gap:", max_gap(bins))
     return max_gap_n_eq_m, max_gap(bins)
 
 
@@ -123,8 +105,6 @@ def main():
 
         print(list(experiments[-1].keys()))
         print(list(experiments[-1].values()))
-        #print(f"(n=m) gap mean of {t}: {linear_n_gap_mean}")
-        #print(f"(n=m^2) gap mean of {t}: {big_n_gap_mean}")
 
     pd.DataFrame(experiments).to_csv("results/"+args.result_name+".csv")
 
