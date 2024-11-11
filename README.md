@@ -17,8 +17,11 @@ This project requires:
 Install dependencies: You can install the required packages using pip and the provided requirements.txt file:
 
 pip install -r requirements.txt
+
 Usage
+
 Running Experiments
+
 The main script, main.py, runs the experiments based on different allocation strategies and parameters. Here is an example usage:
 
 python3 main.py --bins "[10 * i for i in range(1, 11)]" --option-bins "[2]" --reps 100 --batches "[100 * i for i in range(1, 72, 7)]" --result-name "2_d_choice_with_batches"
@@ -35,6 +38,7 @@ python3 main.py --bins "[10 * i for i in range(1, 11)]" --option-bins "[2]" --re
 Results are saved as CSV files with mean and variance for each experiment, labeled by the parameters used.
 
 Visualizing Results
+
 To generate plots of the experimental results, use visualize_results.py with the appropriate axis parameter:
 
 python3 visualize_results.py --x-axis m
